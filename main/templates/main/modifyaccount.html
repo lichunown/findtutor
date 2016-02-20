@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}修改{% endblock %}
+{% block content %}
+	{% if projects %}
+		<p>已加入项目</p>
+		{% for project in projects %}
+			<ul><a href="{% url 'showproject' project.id %}">{{ project.name }}</a></ul>
+		{% endfor %}
+	{% endif %}
+	{% if success %}	
+		<p>保存成功</p>	
+	{% endif %}
+	{% if error %}	
+		<p>好像出问题了嘞~~~</p>	
+	{% endif %}
+	<form  method="post" action="{% url 'modifyaccount' %}">
+
+		{% csrf_token %}
+		{% for field in form %}
+			<label>{{ field.label }} : </label>{{ field }}
+			<br />
+		{% endfor %}
+		<input type="submit" value="change" />
+	</form>
+	
+
+{% endblock %}

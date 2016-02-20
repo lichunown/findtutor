@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block title %}创建新项目{% endblock %}
+{% block content %}
+
+	<form  method="post" action="{% url 'createproject' %}">
+		{% csrf_token %}
+		{% if error %}
+			{% ifequal error 'repeat' %}
+				<p>您已有的项目与此项目重名</p>
+			{% endifequal %}
+		{% endif %}
+
+		{% for field in form %}
+			{{ field.errors }}
+			<label>{{ field.label }} : </label>{{ field }}
+			<br />
+		{% endfor %}
+		<input type="submit" value="create" />
+	</form>
+
+{% endblock %}

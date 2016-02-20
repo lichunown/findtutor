@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}注册{% endblock %}
+{% block content %}
+	{% if error %}	
+		{% ifequal error "passwordagain" %}
+			<p>请检查两次密码是否重复。</p>
+		{% endifequal %}
+		{% ifequal error "usernamerepeat" %}
+			<p>用户名已被使用。</p>
+		{% endifequal %}		
+	{% endif %}
+	<form  method="post" action="{% url 'signup' %}">
+		{% csrf_token %}
+		{% if error %}
+			
+		{% endif %}
+
+		{% for field in form %}
+			{{ field.errors }}
+			{{ field.label_tag }} : {{ field }}
+			<br />
+		{% endfor %}
+		<input type="submit" value="signup" />
+	</form>
+	
+
+{% endblock %}

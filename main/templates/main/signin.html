@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}登陆{% endblock %}
+{% block content %}	
+	{% if not result %}	
+		<form  method="post" action="{% url 'signin' %}">
+			{% csrf_token %}
+	        {{ form.non_field_errors }}
+	        {% for field in form %}
+	      		{{ field.label }} : {{ field }}
+	        	{{ field.errors }}
+	            <br>
+      		{% endfor %}
+			<input type="submit" value="signin" />
+		</form>
+	{% else %}
+		{% ifequal result 'succeed' %}
+			<p>sign in succeed</p>
+			<p><a href ="{% url before %}">如果没有自动跳转请点击</a></p>
+			<script language="javascript">
+           		window.location.href="{% url before %}"; 
+    		</script>
+		{% endifequal %}
+		{% ifequal result 'error' %}
+			<p>password wrong or this account doesn't exist.</p>
+			<form  method="post" action="{% url 'signin' %}">
+				{% csrf_token %}
+				{% csrf_token %}
+		        {{ form.non_field_errors }}
+		        {% for field in form %}
+		      		{{ field.label }} : {{ field }}
+		        	{{ field.errors }}
+		            <br>
+	      		{% endfor %}
+				<input type="submit" value="signin" />
+			</form>			
+		{% endifequal %}
+		{% ifequal result 'signout' %}	
+			<p>sign in succeed</p>
+			<p><a href ="{% url before %}">如果没有自动跳转请点击</a></p>
+			<script language="javascript">
+           		window.location.href="{% url before %}"; 
+    		</script>		
+		{% endifequal %}
+	{% endif %}
+{% endblock %}

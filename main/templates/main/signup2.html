@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}注册{% endblock %}
+{% block content %}
+	{% if error %}	
+		{% ifequal error "passwordagain" %}
+			<p>请检查两次密码是否重复。</p>
+		{% endifequal %}
+		{% ifequal error "usernamerepeat" %}
+			<p>用户名已被使用。</p>
+		{% endifequal %}		
+	{% endif %}
+	<form  method="post" action="{% url 'signup' %}">
+		{% csrf_token %}
+			用户名 : <input id="id_username" maxlength="20" name="username" type="text" />
+			<br />		
+			密码 : <input id="id_password" maxlength="20" name="password" type="text" />
+			<br />		
+			密码确认 : <input id="id_passwordagain" maxlength="20" name="passwordagain" type="text" />
+			<br />		
+			学号 : <input id="id_sid" maxlength="11" name="sid" type="text" />
+			<br />		
+			真实姓名 : <input id="id_truename" maxlength="20" name="truename" type="text" />
+			<br />		
+		学院 : <select id="id_college" maxlength="20" name="college">
+				<option value="tongxin">通信工程学院</option>
+				<option value="dianzi">电子工程学院</option>
+				<option value="jisuanji">计算机学院</option>
+				<option value="jidian">机电工程学院</option>
+				<option value="wuguang">物理与光电工程学院</option>
+				<option value="jingguan">经济与管理学院</option>
+				<option value="shutong">数学与统计学院</option>
+				<option value="renwen">人文学院</option>
+				<option value="waiguoyu">外国语学院</option>
+				<option value="ruanjian">软件学院</option>
+				<option value="weidianzi">微电子学院</option>
+				<option value="shengke">生命科学技术学院</option>
+				<option value="kongjian">空间科学与技术学院</option>
+				<option value="cailiao">先进材料与纳米科技学院</option>
+				<option value="wangan">网络与信息安全学院</option>
+			</select>
+			<br />
+			
+		<input type="submit" value="signup" />
+	</form>
+	
+
+{% endblock %}

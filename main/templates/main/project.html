@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ project.name }}{% endblock %}
+{% block content %}
+	<div>
+		<table>
+			<tr><td>项目名称:</td><td>{{ project.name }}</td></tr>
+			<tr><td>完成状态:</td><td>{{ project.get_status_display }}</td></tr>
+			<tr><td>开始时间:</td><td>{{ project.startdate }}</td></tr>
+			<tr><td>团队:</td><td>
+							{% for student in students %}
+								<a href="{% url 'showstudent' student.id %}">{{ student.truename }}</a>
+							{% endfor %}
+							{% if edit %}
+								<a href="{% url 'invitestudent' %}">add</a>
+							{% endif %}
+						</td></tr>
+			<tr><td>导师:</td><td>
+							{% if not tutors %}
+								<p>还木有导师的光顾~~~</p>
+							{% else %}
+								{% for tutor in tutors %}
+									<a href="{% url 'showtutor' tutor.id %}">{{ tutor.truename }}</a>
+								{% endfor %}
+							{% endif %}	
+							{% if edit %}
+								<a href="{% url 'invitestudent' %}">add</a>
+							{% endif %}							
+						</td></tr>
+			<tr><td>详细介绍:</td><td>{{ project.introduction }}</td></tr>
+		</table>
+	</div>
+
+{% endblock %}

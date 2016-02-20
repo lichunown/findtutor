@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block title %}最新项目{% endblock %}
+{% block content %}
+	<a href="{% url 'createproject' %}">创建新项目</a>
+	<p>页数{{ page }}</p>
+	{% if projects %}
+		{% for project in projects %}
+			<p><a href="{% url 'showproject' project.id %}">{{ project.name }}</a></p>
+		{% endfor %}
+	{% else %}
+		<p>没有最新项目了嘞~~~</p>
+	{% endif %}
+	
+{% endblock %}

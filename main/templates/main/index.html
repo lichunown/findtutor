@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block title %}找导师{% endblock %}
+{% block content %}
+	<div class="showprojects">
+		{% if not projects %}
+			<p>怎么可以没有新项目呢，怎么可以这样子咯~~~</p>
+		{% else %}
+			<li>
+				<p><a href="{% url 'showprojects' '1' %}">最新项目</a></p>
+				{% for project in projects %}
+					<ul><a href="{% url 'showproject' project.id %}">{{ project.name }}</a>{{ project.startdate }}</ul>
+				{% endfor %}
+			</li>
+		{% endif %}		
+	</div>
+	<div class="showtutors">
+		{% if not tutors %}
+			<p>导师们都很忙 [伤心]~~~</p>
+		{% else %}
+			<li>
+				<p>导师</p>
+				{% for tutor in tutors %}
+					<ul><a href="{% url 'showtutor' tutor.id %}">{{ tutor.truename }}</a>{{ tutor.college }}</ul>
+				{% endfor %}
+			</li>
+		{% endif %}		
+	</div>
+{% endblock %}
