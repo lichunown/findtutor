@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block title %}搜索{% endblock %}
+{% block content %}
+	{% if error %}
+		{% ifequal error 'none' %}
+			<p>请确认至少有一个选项填写</p>
+		{% endifequal %}	
+	{% elif r %}
+		<table>
+			{% if not result %}
+				<p>亲~~我们的数据库中还没有此导师嘞</p>
+			{% endif %}
+			{% for field in result %}				
+				<tr><td>真实姓名：</td><td>{{ field.truename }}</td><td><a href="{% url 'invitetutor' field.id %}">邀请</a></td></tr>	
+				<tr><td>所属学院：</td><td>{{ field.college }}</td></tr>	
+				<tr><td>详细介绍：</td><td>{{ field.introduction }}</td></tr>				
+			{% endfor %}
+		</table>
+	{% else %}<!-- 查询界面 -->
+	<form  method="post" action="{% url 'findtutor' %}">
+		{% csrf_token %}		
+		<label>真实姓名 : </label><input id="id_truename" maxlength="20" name="truename" type="text" /><br />		
+		<label>学院 : </label><select id="id_college" maxlength="20" name="college">
+				<option value="tongxin">通信工程学院</option>
+				<option value="dianzi">电子工程学院</option>
+				<option value="jisuanji">计算机学院</option>
+				<option value="jidian">机电工程学院</option>
+				<option value="wuguang">物理与光电工程学院</option>
+				<option value="jingguan">经济与管理学院</option>
+				<option value="shutong">数学与统计学院</option>
+				<option value="renwen">人文学院</option>
+				<option value="waiguoyu">外国语学院</option>
+				<option value="ruanjian">软件学院</option>
+				<option value="weidianzi">微电子学院</option>
+				<option value="shengke">生命科学技术学院</option>
+				<option value="kongjian">空间科学与技术学院</option>
+				<option value="cailiao">先进材料与纳米科技学院</option>
+				<option value="wangan">网络与信息安全学院</option>
+			</select><br />			
+		<input type="submit" value="ok" />
+	</form>
+
+	{% endif %}
+{% endblock %}

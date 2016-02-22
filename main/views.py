@@ -98,6 +98,7 @@ def modifyaccount(request):
             return render(request,'main/modifyaccount.html',{'projects':projects,'form':f})
     else:
         return render(request,'main/signup2.html',{'form':suf})
+
 def showtutors(request,page):
     pass
 def showtutor(request,id):

@@ -4,6 +4,7 @@ from django.utils.encoding import smart_unicode
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from . import validators
 
 # Create your models here.
 COLLEGES=(
@@ -35,7 +36,7 @@ INVITATION_STATUS=(
     ('2','已阅读'),#students send to tutors
     ('3','已接受'),
     ('4','未接受'),
-    ('a','未阅读'),#tutors send to students
+    ('a','未阅读'),#student&tutors send to students
     ('b','已阅读'),
     ('c','已接受'),
     ('d','未接受'),
@@ -54,6 +55,7 @@ class Student(models.Model):
     username=models.OneToOneField(User)
     sid=models.CharField(max_length=11)
     truename=models.CharField(max_length=50)
+    picture=models.ForeignKey('Picture',blank=True)
     birthday=models.DateField(timezone.now,blank=True)
     college=models.CharField(max_length=50,choices=COLLEGES)#need add limit
     major=models.CharField(max_length=50,blank=True)#need add limit
@@ -65,6 +67,8 @@ class Student(models.Model):
 class Tutor(models.Model):
     username=models.OneToOneField(User)
     truename=models.CharField(max_length=50,blank=True)
+    picture=models.ForeignKey('Picture',blank=True)
+    jobtitle=models.CharField(max_length=3,choices=TITLE_CHOICE,blank=True)
     college=models.CharField(max_length=50,blank=True,choices=COLLEGES)#need add limit
     introduction=models.TextField(blank=True)
     def __unicode__(self):
@@ -73,18 +77,23 @@ class Tutor(models.Model):
 class Project(models.Model):
     name=models.CharField(max_length=50,blank=True)
     status=models.CharField(max_length=10,choices=PROJECT_STATUS)
-    startdate=models.DateField(timezone.now)
-    introduction=models.TextField()
+    startdate=models.DateField(timezone.now)   
     students=models.ManyToManyField(Student)
     tutors=models.ManyToManyField(Tutor,blank=True)
+    introduction=models.TextField()
+    pictures=models.ForeignKey('Picture',blank=True)
     def __unicode__(self):
         return smart_unicode(self.name)
 
 class Invitation(models.Model):
     student=models.OneToOneField('Student')
-    tutor=models.OneToOneField('Tutor')
-    jobtitle=models.CharField(max_length=3,choices=TITLE_CHOICE)
-    project=models.ForeignKey('Project')
-    text=models.TextField(blank=True)
+    tutor=models.OneToOneField('Tutor',blank=True)
+    project=models.OneToOneField('Project')    
     tag=models.CharField(max_length=3,choices=TAG_CHOICE)
     status=models.CharField(max_length=10,choices=INVITATION_STATUS)
+    invitetext=models.TextField(blank=True)
+    pictures=models.ForeignKey('Picture',blank=True)
+
+class Picture(models.Model):
+    initname=models.CharField(max_length=10,blank=True)
+    src=models.ImageField(upload_to='./img/post', blank=True, validators=[validators.validate_image])
