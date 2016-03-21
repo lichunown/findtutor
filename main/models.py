@@ -55,45 +55,48 @@ class Student(models.Model):
     username=models.OneToOneField(User)
     sid=models.CharField(max_length=11)
     truename=models.CharField(max_length=50)
-    picture=models.ForeignKey('Picture',blank=True)
-    birthday=models.DateField(timezone.now,blank=True)
+    picture=models.ForeignKey('Picture',blank=True,null=True)
+    birthday=models.DateField(timezone.now,blank=True,null=True)
     college=models.CharField(max_length=50,choices=COLLEGES)#need add limit
-    major=models.CharField(max_length=50,blank=True)#need add limit
-    introduction=models.TextField(blank=True)
+    major=models.CharField(max_length=50,blank=True,null=True)#need add limit
+    introduction=models.TextField(blank=True,null=True)
     def __unicode__(self):
         return smart_unicode(self.sid)
 
 
 class Tutor(models.Model):
     username=models.OneToOneField(User)
-    truename=models.CharField(max_length=50,blank=True)
-    picture=models.ForeignKey('Picture',blank=True)
-    jobtitle=models.CharField(max_length=3,choices=TITLE_CHOICE,blank=True)
+    truename=models.CharField(max_length=50,blank=True,null=True)
+    picture=models.ForeignKey('Picture',blank=True,null=True)
+    jobtitle=models.CharField(max_length=3,choices=TITLE_CHOICE,blank=True,null=True)
     college=models.CharField(max_length=50,blank=True,choices=COLLEGES)#need add limit
-    introduction=models.TextField(blank=True)
+    introduction=models.TextField(blank=True,null=True)
     def __unicode__(self):
         return smart_unicode(self.truename)
 
 class Project(models.Model):
-    name=models.CharField(max_length=50,blank=True)
+    name=models.CharField(max_length=50,blank=True,null=True)
     status=models.CharField(max_length=10,choices=PROJECT_STATUS)
     startdate=models.DateField(timezone.now)   
     students=models.ManyToManyField(Student)
-    tutors=models.ManyToManyField(Tutor,blank=True)
+    tutors=models.ManyToManyField(Tutor,blank=True,null=True)
     introduction=models.TextField()
-    pictures=models.ForeignKey('Picture',blank=True)
+    pictures=models.ForeignKey('Picture',blank=True,null=True)
     def __unicode__(self):
         return smart_unicode(self.name)
 
 class Invitation(models.Model):
     student=models.OneToOneField('Student')
-    tutor=models.OneToOneField('Tutor',blank=True)
+    tutor=models.OneToOneField('Tutor',blank=True,null=True)
     project=models.OneToOneField('Project')    
     tag=models.CharField(max_length=3,choices=TAG_CHOICE)
     status=models.CharField(max_length=10,choices=INVITATION_STATUS)
-    invitetext=models.TextField(blank=True)
-    pictures=models.ForeignKey('Picture',blank=True)
+    invitetext=models.TextField(blank=True,null=True)
+    pictures=models.ForeignKey('Picture',blank=True,null=True)
 
 class Picture(models.Model):
     initname=models.CharField(max_length=10,blank=True)
-    src=models.ImageField(upload_to='./img/post', blank=True, validators=[validators.validate_image])
+    src=models.ImageField(upload_to='./img/post', blank=True,null=True, validators=[validators.validate_image])
+    def __unicode__(self):
+        return smart_unicode(self.initname)
+
